@@ -29,7 +29,7 @@ jobs:
 
   iac-static-analysis:
     runs-on: ubuntu-latest
-    name: workflow scan
+    name: checkov static analysis
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,16 +42,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: false
 
-  iac-linting:
+  bicep-linting:
     runs-on: ubuntu-latest
-    name: workflow scan
+    name: bicep linting
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: "IaC Linting"
+      - name: "Bicep Linting"
         id: "github-workflow-iac-linting"
-        uses: jf781/GHActions/iac-static-analysis@main
+        uses: jf781/GHActions/bicep-linter@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: false
