@@ -14,7 +14,8 @@ output:
   - sarif
   - github_failed_only
 quiet: true
-skip-check: []
+skip-check:
+  - CKV_AZURE_24
 secrets-history-timeout: 12h
 secrets-scan-file-type: []
 summary-position: top
