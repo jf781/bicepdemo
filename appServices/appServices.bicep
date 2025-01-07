@@ -36,6 +36,7 @@ param appInsights object
 param unusedVar string
 
 
+
 // Variables
 var webAppAppInsightsSettings = [
   {
