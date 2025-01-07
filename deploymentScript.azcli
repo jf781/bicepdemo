@@ -1,0 +1,24 @@
+location="centralUs"
+subName="Stark Testing"
+
+az account set -s "$subName"
+
+# Create Resource Group
+rg=$(az deployment sub create --location $location --template-file './resourceGroups/resourceGroups.bicep' --parameters './rg.bicepparam' )
+
+# Get outputs from Resource Group
+tags=$(echo $rg | jq -c '.properties.outputs.tags.value')
+rgName=$(echo $rg | jq -r '.properties.outputs.name.value')
+
+# Create Core Resources
+core=$(az deployment group create --resource-group $rgName --template-file './coreResources/core.bicep' --parameters './core.bicepparam' --parameters tags=$tags)
+
+# Get outputs from Core Resources
+appConfigSettings=$(echo $core | jq -c '.properties.outputs.appConfigKeyValues.value')
+appInsightsKey=$(echo $core | jq -r '.properties.outputs.appInsightsKey.value')
+appInsightsConnectionString=$(echo $core | jq -r '.properties.outputs.appInsightsConnectionString.value')
+appInsights="{\"appInsightsKey\":\"$appInsightsKey\",\"connectionString\":\"$appInsightsConnectionString\"}"
+
+# # Create App Services
+az deployment group create --resource-group $rgName --template-file './appServices/appServices.bicep' --parameters './appServices.bicepparam' --parameters tags=$tags --parameters appInsights=$appInsights --parameters webAppSettings=$appConfigSettings
+

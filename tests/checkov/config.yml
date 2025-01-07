@@ -1,0 +1,20 @@
+---
+block-list-secret-scan: []
+branch: main
+directory:
+  - .
+download-external-modules: false
+evaluate-variables: true
+external-modules-download-path: .external_modules
+framework:
+  - bicep
+mask: []
+output:
+  - cli
+  - sarif
+  - github_failed_only
+quiet: true
+skip-check: []
+secrets-history-timeout: 12h
+secrets-scan-file-type: []
+summary-position: top
