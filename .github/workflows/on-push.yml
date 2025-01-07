@@ -22,7 +22,7 @@ jobs:
 
       - name: "github workflow static analysis"
         id: "github-workflow-static-analysis"
-        uses: jf781/GHActions/tree/main/github-workflow-scan@main
+        uses: jf781/GHActions/github-workflow-scan@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: false
@@ -36,7 +36,7 @@ jobs:
 
       - name: "github workflow static analysis"
         id: "github-workflow-static-analysis"
-        uses: jf781/GHActions/tree/main/iac-static-analysis@main
+        uses: jf781/GHActions/iac-static-analysis@main
         with:
           config-file: tests/checkov/config.yml
           github-token: ${{ secrets.GITHUB_TOKEN }}
