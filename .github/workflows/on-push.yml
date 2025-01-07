@@ -4,8 +4,8 @@ on:
   push:
     # branches-ignore:
     #   - main
-    tags-ignore:
-      - "*"
+    # tags-ignore:
+    #   - "*"
 
 permissions:
   contents: write
