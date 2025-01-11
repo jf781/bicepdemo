@@ -70,6 +70,13 @@ param appConfigSkuName string = 'Standard'
 @description('List of key-value pairs to add to the App Configuration.')
 param appSvcAppConfigKeys array = []
 
+// Parameters - SQL Server
+@description('Public network access for the SQL Server.')
+param sqlPublicNetworkAccess string = 'Disabled'
+
+@description('Minimum TLS version for the SQL Server.')
+param sqlMinimumTlsVersion string = '1.2'
+
 
 
 // Variables
@@ -132,6 +139,9 @@ resource appSvcSqlServer 'Microsoft.Sql/servers@2021-11-01' = {
   properties: {
     administratorLogin: 'sqladmin'
     administratorLoginPassword: sqlAdminPassword
+    publicNetworkAccess: sqlPublicNetworkAccess
+    minimalTlsVersion: sqlMinimumTlsVersion
+
   }
 }
 
