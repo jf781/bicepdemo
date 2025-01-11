@@ -2,9 +2,10 @@
 # See all available variables at https://megalinter.io/configuration/ and in linters documentation
 
 # APPLY_FIXES: all
-# ENABLE: # If you use ENABLE variable, all other languages/formats/tooling formats will be disabled by default
-ENABLE_LINTERS: # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
-  - BICEP_BICEP_LINTER
+ENABLE:
+  - BICEP # If you use ENABLE variable, all other languages/formats/tooling formats will be disabled by default
+# ENABLE_LINTERS: # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
+#   - BICEP_BICEP_LINTER
 PRINT_ALL_FILES: false
 
 SHOW_ELAPSED_TIME: true
