@@ -225,3 +225,6 @@ output appConfigKeyValues array = [
     value: appSvcAppConfigKeyValues[i].properties.value
   }
 ]
+
+
+param resourceUsedParam string = 'unused'
