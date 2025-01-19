@@ -6,7 +6,7 @@ param tags object = {}
 @description('Optional. Tags of the resource.')
 param rg object = {}
 
-param unusedParam string = 'unused'
+// param unusedParam string = 'unused'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' =  {
   name: rg.name
