@@ -114,5 +114,3 @@ resource webAppSlotsRes 'Microsoft.Web/sites/slots@2022-09-01' = [for slot in we
     }
   }
 }]
-
-re
