@@ -8,8 +8,6 @@ param rg object = {}
 
 param unusedParam string = 'unused'
 
-
-
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' =  {
   name: rg.name
   location: rg.location
