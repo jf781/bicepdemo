@@ -21,37 +21,44 @@ param appServicePlanSkuTier string
 @description('App Service Plan Reservation.')
 param appServicePlanReserved bool = false
 
+@description('Applicaiton Insights instance information.')
+param appInsights object
+
+@description('App settings for the main Web App.')
+param webAppSettings array
+
 
 // Web App
 @description('Name of the Web App.')
 param webAppName string
 
-@description('App settings for the main Web App.')
-param webAppSettings array = [
-  {
-    name: 'Setting1'
-    value: 'value1'
-  }
-  {
-    name: 'Setting2'
-    value: 'value2'
-  }
-]
-
 // Deployment Slots
-
 @description('List of deployment slots to create. Each object includes "name" and an array of "appSettings" for that slot.')
-param webAppSlots array = [
+param webAppSlots array 
+
+// Saved as a potential option for parsing through the webAppSettings array
+// var updatedwebAppSettings = [
+//   for (key, i) in webAppSettings: {
+//     name: webAppSettings[i].name
+//     value: webAppSettings[i].value
+//   }
+// ]
+
+// var allWebAppSettings = union(webAppAppInsightsSettings, updatedwebAppSettings)
+
+// Variables
+var webAppAppInsightsSettings = [
   {
-    name: 'staging'
-    appSettings: [
-      {
-        name: 'ENVIRONMENT'
-        value: 'staging'
-      }
-    ]
+    name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+    value: appInsights.appInsightsKey.value
+  }
+  {
+    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    value: appInsights.connectionString.value
   }
 ]
+
+var allWebAppSettings = union(webAppAppInsightsSettings, webAppSettings)
 
 
 
@@ -82,10 +89,11 @@ resource webApp 'Microsoft.Web/sites@2022-09-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      appSettings: [ for appSettings in webAppSettings: {
-        name: appSettings.name
-        value: appSettings.value
-      }
+      appSettings: [
+        for appSettings in allWebAppSettings: {
+          name: appSettings.name
+          value: appSettings.value
+        }
       ]
     }
   }
@@ -107,3 +115,4 @@ resource webAppSlotsRes 'Microsoft.Web/sites/slots@2022-09-01' = [for slot in we
   }
 }]
 
+re

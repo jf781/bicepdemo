@@ -2,10 +2,10 @@ name: "On Push"
 
 on:
   push:
-    # branches-ignore:
-    #   - main
-    # tags-ignore:
-    #   - "*"
+    branches-ignore:
+      - main
+    tags-ignore:
+      - "*"
 
 permissions:
   contents: write

@@ -1,5 +1,5 @@
 
-using './resourceGroups/resourceGroups.bicep'
+using '../resourceGroups/resourceGroups.bicep'
 
 param rg = {
   name: 'demoRg'

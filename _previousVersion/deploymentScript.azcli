@@ -22,3 +22,7 @@ appInsights="{\"appInsightsKey\":\"$appInsightsKey\",\"connectionString\":\"$app
 # # Create App Services
 az deployment group create --resource-group $rgName --template-file './appServices/appServices.bicep' --parameters './appServices.bicepparam' --parameters tags=$tags --parameters appInsights=$appInsights --parameters webAppSettings=$appConfigSettings
 
+
+## 
+## az deployment group create --resource-group $rgName --template-file './resources/resources.bicep' --parameters './resources.bicepparam' --parameters tags=$tags
+##

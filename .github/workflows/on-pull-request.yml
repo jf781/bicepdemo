@@ -1,0 +1,21 @@
+name: "On pull request"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    name: run terraform apply
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          
