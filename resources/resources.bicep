@@ -227,4 +227,4 @@ output appConfigKeyValues array = [
 ]
 
 
-param resourceUsedParam string = 'unused'
+// param resourceUsedParam string = 'unused'
