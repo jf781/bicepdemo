@@ -22,7 +22,7 @@ jobs:
 
       - uses: azure/login@v2
         with:
-          creds: '{"clientId":"${{ vars.AZURE_CLIENT_ID }}","clientSecret":"${{ vars.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ vars.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ vars.AZURE_TENANT_ID }}"}'
+          creds: '{"clientId":"${{ vars.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ vars.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ vars.AZURE_TENANT_ID }}"}'
         
       - name: Bicep WhatIf - Resource Group
         uses: jf781/GHActions/bicep-deployment@main
