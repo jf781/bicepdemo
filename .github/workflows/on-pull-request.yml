@@ -12,7 +12,7 @@ permissions:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    name: run terraform apply
+    name: run bicep plan
     env:
       GITHUB_TOKEN: ${{ github.token }}
       
