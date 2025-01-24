@@ -19,4 +19,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          creds: '{"clientId":"${{ vars.AZURE_CLIENT_ID }}","clientSecret":"${{ vars.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ vars.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ vars.AZURE_TENANT_ID }}"}'
         
+      - name: Bicep WhatIf - Resource Group
+        uses: jf781/GHActions/bicep-deployment@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploymentScope: 'subscription'
+          deploymentSubscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          deploymentRegion: ${{ vars.AZURE_REGION }}
+          deploymentTemplate: 'resourceGropus/resourceGroups.bicep'
+          deploymentParameters: 'paramFiles/resourceGroups.bicepparam'
+          additionalArguements: '--what-if'
+
+      - name: Bicep WhatIf - Resources
+        uses: jf781/GHActions/bicep-deployment@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploymentScope: 'resourcegroup'
+          deploymentResourceGroup: 'demoRg'
+          deploymentRegion: ${{ vars.AZURE_REGION }}
+          deploymentTemplate: 'resources/resources.bicep'
+          deploymentParameters: 'paramFiles/resources.bicepparam'
+          additionalArguements: '--what-if'
+
+      
