@@ -27,6 +27,11 @@ param appSvcAppConfigKeys = [
     value: 'value2'
     label: 'Production'
   }
+  {
+    name: 'key3:subkey3'
+    value: 'value3'
+    label: 'Production'
+  }
 ]
 
 param appServicePlanName = 'appServicePlanName'
