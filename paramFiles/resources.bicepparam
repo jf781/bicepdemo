@@ -18,7 +18,7 @@ param appConfigSkuName = 'Standard'
 
 param appSvcAppConfigKeys = [
   {
-    name: 'key1:subkey1'
+    name: 'key1:subkey123'
     value: 'value1'
     label: ''
   }
