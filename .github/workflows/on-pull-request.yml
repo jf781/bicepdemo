@@ -23,19 +23,6 @@ jobs:
       - uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
-      - name: Bicep WhatIf - Resource Group
-        id: bicep_rg
-        uses: jf781/GHActions/bicep-deployment@main
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          deployment-scope: 'subscription'
-          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          deployment-region: ${{ vars.AZURE_REGION }}
-          deployment-template: 'resourceGropus/resourceGroups.bicep'
-          deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
-          deployment-operation: 'whatIf'
 
       - name: Parse Parameters File
         shell: pwsh
@@ -48,6 +35,19 @@ jobs:
           echo "resource_group_name is $resource_group_name"
           echo "location=$location" >> $env:GITHUB_OUTPUT
           echo "resource_group_name=$resource_group_name" >> $env:GITHUB_OUTPUT
+      
+      - name: Bicep WhatIf - Resource Group
+        id: bicep_rg
+        uses: jf781/GHActions/bicep-deployment@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          deployment-scope: 'subscription'
+          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          deployment-region: ${{ steps.parse_parameters.outputs.location }}
+          deployment-template: 'resourceGropus/resourceGroups.bicep'
+          deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
+          deployment-operation: 'whatIf'
 
       - name: Create Temp Resource Group
         shell: bash
