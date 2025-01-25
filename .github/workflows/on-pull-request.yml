@@ -50,15 +50,15 @@ jobs:
           echo "resource_group_name=$resource_group_name" >> $env:GITHUB_OUTPUT
 
       - name: Create Temp Resource Group
-        shell: pwsh
+        shell: bash
         id: create_temp_rg
         run: |
           if [[ az group group exists --name ${{ steps.parse_parameters.outputs.resource_group_name }} ]]; then
             echo "Resource group ${{ steps.parse_parameters.outputs.resource_group_name }} already exists"
-            echo "resource_group_exists=true" >> $env:GITHUB_OUTPUT
+            echo "resource_group_exists=true" >> $GITHUB_OUTPUT
           else
             az group create --name ${{ steps.parse_parameters.outputs.resource_group_name }} --location ${{ steps.parse_parameters.outputs.location }}
-            echo "resource_group_exists=false" >> $env:GITHUB_OUTPUT
+            echo "resource_group_exists=false" >> $GITHUB_OUTPUT
           fi
 
 
@@ -77,7 +77,7 @@ jobs:
           deployment-operation: 'whatIf'
 
       - name: Remove Temp Resource Group
-        shell: pwsh
+        shell: bash
         id: remove_temp_rg
         run: |
           if [[ ${{ steps.create_temp_rg.outputs.resource_group_exists}} }} ]]; then
