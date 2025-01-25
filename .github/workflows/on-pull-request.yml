@@ -41,14 +41,12 @@ jobs:
         shell: pwsh
         id: parse_parameters
         run: |
-          ls
-          cat paramFiles/resourceGroups.bicepparam
           $params = ((az bicep build-params --file paramFiles/resourceGroups.bicepparam --stdout | ConvertFrom-Json).parametersJson | ConvertFrom-Json)
-          echo $params
+          echo "Params are: $params"
           $location = $params.rg.value.location
           $rgName = $params.rg.value.name
-          echo $location
-          echo $rgName
+          echo "Location is: $location"
+          echo "rgname is: $rgName"
           echo $location >> $GITHUB_OUTPUT
           echo $rgName >> $GITHUB_OUTPUT
 
