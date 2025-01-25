@@ -34,7 +34,7 @@ jobs:
           deployment-region: ${{ vars.AZURE_REGION }}
           deployment-template: 'resourceGropus/resourceGroups.bicep'
           deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
-          deployment-operation: 'whatif'
+          deployment-operation: 'whatIf'
 
       - name: Bicep WhatIf - Resources
         uses: jf781/GHActions/bicep-deployment@main
@@ -48,6 +48,5 @@ jobs:
           deployment-region: ${{ vars.AZURE_REGION }}
           deployment-template: 'resources/resources.bicep'
           deployment-parameters: 'paramFiles/resources.bicepparam'
-          deployment-operation: 'whatif'
+          deployment-operation: 'whatIf'
 
-      
