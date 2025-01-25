@@ -28,12 +28,13 @@ jobs:
         uses: jf781/GHActions/bicep-deployment@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploymentScope: 'subscription'
-          deploymentSubscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          deploymentRegion: ${{ vars.AZURE_REGION }}
-          deploymentTemplate: 'resourceGropus/resourceGroups.bicep'
-          deploymentParameters: 'paramFiles/resourceGroups.bicepparam'
-          additionalArguements: '--what-if'
+          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          deployment-scope: 'subscription'
+          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          deployment-region: ${{ vars.AZURE_REGION }}
+          deployment-template: 'resourceGropus/resourceGroups.bicep'
+          deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
+          additional-arguements: '--what-if'
 
       - name: Bicep WhatIf - Resources
         uses: jf781/GHActions/bicep-deployment@main
@@ -41,11 +42,12 @@ jobs:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploymentScope: 'resourcegroup'
-          deploymentResourceGroup: 'demoRg'
-          deploymentRegion: ${{ vars.AZURE_REGION }}
-          deploymentTemplate: 'resources/resources.bicep'
-          deploymentParameters: 'paramFiles/resources.bicepparam'
-          additionalArguements: '--what-if'
+          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          deployment-scope: 'resourcegroup'
+          deployment-resource-group: 'demoRg'
+          deployment-region: ${{ vars.AZURE_REGION }}
+          deployment-template: 'resources/resources.bicep'
+          deployment-parameters: 'paramFiles/resources.bicepparam'
+          additional-arguements: '--what-if'
 
       
