@@ -85,6 +85,6 @@ jobs:
           if [[ ${{ steps.create_temp_rg.outputs.resource_group_exists}} == "true" ]]; then
             echo "No changes, pre-defined resource group. Skipping deletion"
           else
-            az group delete --name ${{ steps.parse_parameters.outputs.resource_group_name }} --location ${{ steps.parse_parameters.outputs.location }}
+            az group delete --resource-group ${{ steps.parse_parameters.outputs.resource_group_name }} --yes
             echo "Removing resource group ${{ steps.parse_parameters.outputs.resource_group_name }}"
           fi
