@@ -55,7 +55,7 @@ jobs:
         with:
           type: deployment
           operation: 'whatIf'
-          name: " ${{ steps.parse_parameters.outputs.location }}- ${{ steps.parse_parameters.outputs.resource_group_name }}"
+          name: " ${{ steps.parse_parameters.outputs.location }}-${{ steps.parse_parameters.outputs.resource_group_name }}"
           scope: subscription
           location: ${{ steps.parse_parameters.outputs.location }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
@@ -102,7 +102,7 @@ jobs:
         with:
           type: deployment
           operation: 'whatIf'
-          name: " ${{ steps.parse_parameters.outputs.location }}- ${{ steps.parse_parameters.outputs.resource_group_name }}-resources"
+          name: " ${{ steps.parse_parameters.outputs.location }}-${{ steps.parse_parameters.outputs.resource_group_name }}-resources"
           scope: resourceGroup
           location: ${{ steps.parse_parameters.outputs.location }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
