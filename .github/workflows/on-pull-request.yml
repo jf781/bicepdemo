@@ -52,8 +52,6 @@ jobs:
       - name: Bicep WhatIf - Resources
         uses: jf781/GHActions/bicep-deployment@main
         id: bicep_resources
-        env:
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
