@@ -46,8 +46,8 @@ jobs:
           $rgName = $params.parameters.rg.value.name
           echo "location is $location"
           echo "rgName is $rgName"
-          echo "location=$location" >> $GITHUB_OUTPUT
-          echo "resource_group_name=$rgName" >> $GITHUB_OUTPUT
+          echo "location=$location" >> $env:GITHUB_OUTPUT
+          echo "resource_group_name=$rgName" >> $env:GITHUB_OUTPUT
 
       - name: test
         shell: pwsh
