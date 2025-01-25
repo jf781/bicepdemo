@@ -91,7 +91,7 @@ jobs:
       - name: Testing
         shell: bash
         run: |
-          echo ${{ steps.bicep_what_if_resource_group.outputs }} | jq .
+          echo ${{ steps.bicep_what_if_resource_group.outputs.outputs }} | jq 
 
       - name: Create Temp Resource Group
         shell: bash
