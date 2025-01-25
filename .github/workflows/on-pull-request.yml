@@ -44,10 +44,15 @@ jobs:
           $params = ((az bicep build-params --file paramFiles/resourceGroups.bicepparam --stdout | ConvertFrom-Json).parametersJson | ConvertFrom-Json)
           $location = $params.parameters.rg.value.location
           $rgName = $params.parameters.rg.value.name
-          echo "Location is: $location"
-          echo "rgname is: $rgName"
           echo $location >> $GITHUB_OUTPUT
           echo $rgName >> $GITHUB_OUTPUT
+
+      - name: test
+        shell: pwsh
+        id: test
+        run: |
+          echo ${{ steps.parse_parameters.outputs.location }}
+          echo ${{ steps.parse_parameters.outputs.rgName }}        
 
       - name: Bicep WhatIf - Resources
         uses: jf781/GHActions/bicep-deployment@main
