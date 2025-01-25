@@ -45,6 +45,7 @@ jobs:
           azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
           deployment-scope: 'resourceGroup'
           deployment-resource-group: 'demoRg'
+          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           deployment-region: ${{ vars.AZURE_REGION }}
           deployment-template: 'resources/resources.bicep'
           deployment-parameters: 'paramFiles/resources.bicepparam'
