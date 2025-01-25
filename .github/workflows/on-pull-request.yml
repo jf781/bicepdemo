@@ -36,29 +36,43 @@ jobs:
           echo "location=$location" >> $env:GITHUB_OUTPUT
           echo "resource_group_name=$resource_group_name" >> $env:GITHUB_OUTPUT
       
+      # - name: Bicep WhatIf - Resource Group
+      #   id: bicep_rg
+      #   uses: jf781/GHActions/bicep-deployment@main
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      #     deployment-scope: 'subscription'
+      #     deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      #     deployment-region: ${{ steps.parse_parameters.outputs.location }}
+      #     deployment-template: 'resourceGropus/resourceGroups.bicep'
+      #     deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
+      #     deployment-operation: 'whatIf'
+
       - name: Bicep WhatIf - Resource Group
-        id: bicep_rg
-        uses: jf781/GHActions/bicep-deployment@main
+        id: bicep_resource_group
+        uses: azure/bicep-deploy@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          deployment-scope: 'subscription'
-          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          deployment-region: ${{ steps.parse_parameters.outputs.location }}
-          deployment-template: 'resourceGropus/resourceGroups.bicep'
-          deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
-          deployment-operation: 'whatIf'
+          type: deployment
+          operation: 'whatIf'
+          name: " ${{ steps.parse_parameters.outputs.location }}- ${{ steps.parse_parameters.outputs.resource_group_name }}"
+          scope: subscription
+          location: ${{ steps.parse_parameters.outputs.location }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          # resource-group-name: ${{ inputs.deployment-resource-group }}
+          template-file: 'resourceGropus/resourceGroups.bicep'
+          parameters-file: 'paramFiles/resourceGroups.bicepparam'
 
       - name: Testing
         shell: bash
         run: |
-          echo "RG Output: ${{ steps.bicep_rg.outputs }}"
+          echo "RG Output: ${{ steps.bicep_resource_group.outputs }}"
 
       - name: Create Temp Resource Group
         shell: bash
         id: create_temp_rg
         run: |
-          resource_group_exists=$(az group exists --name ${{ steps.parse_parameters.outputs.resource_group_name }})
+          resource_group_exists=$(az group exists --name ${{ steps.parse_parameters.outputs.resource_group_name }}-resource-group)
           echo "resource_group_exists=false" >> $GITHUB_OUTPUT
           if [[ $resource_group_exists == "true" ]]; then
             echo "Resource group ${{ steps.parse_parameters.outputs.resource_group_name }} already exists"
@@ -69,18 +83,32 @@ jobs:
           fi
 
 
+      # - name: Bicep WhatIf - Resources
+      #   uses: jf781/GHActions/bicep-deployment@main
+      #   id: bicep_resources
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      #     deployment-scope: 'resourceGroup'
+      #     deployment-resource-group: ${{ steps.parse_parameters.outputs.resource_group_name }}
+      #     deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      #     deployment-template: 'resources/resources.bicep'
+      #     deployment-parameters: 'paramFiles/resources.bicepparam'
+      #     deployment-operation: 'whatIf'
+
       - name: Bicep WhatIf - Resources
-        uses: jf781/GHActions/bicep-deployment@main
         id: bicep_resources
+        uses: azure/bicep-deploy@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          deployment-scope: 'resourceGroup'
-          deployment-resource-group: ${{ steps.parse_parameters.outputs.resource_group_name }}
-          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          deployment-template: 'resources/resources.bicep'
-          deployment-parameters: 'paramFiles/resources.bicepparam'
-          deployment-operation: 'whatIf'
+          type: deployment
+          operation: 'whatIf'
+          name: " ${{ steps.parse_parameters.outputs.location }}- ${{ steps.parse_parameters.outputs.resource_group_name }}-resources"
+          scope: resourceGroup
+          location: ${{ steps.parse_parameters.outputs.location }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          resource-group-name: ${{ steps.parse_parameters.outputs.resource_group_name }}
+          template-file: 'resources/resources.bicep'
+          parameters-file: 'paramFiles/resources.bicepparam'
 
       - name: Remove Temp Resource Group
         if: always()
