@@ -25,6 +25,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
         
       - name: Bicep WhatIf - Resource Group
+        id: bicep_rg
         uses: jf781/GHActions/bicep-deployment@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -36,8 +37,14 @@ jobs:
           deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
           deployment-operation: 'whatIf'
 
+      - name: Testing
+        shell: bash
+        run: |
+          echo ${{ steps.bicep_rg.outputs }}
+
       - name: Bicep WhatIf - Resources
         uses: jf781/GHActions/bicep-deployment@main
+        id: bicep_resources
         env:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         with:
