@@ -66,7 +66,8 @@ jobs:
       - name: Testing
         shell: bash
         run: |
-          echo "RG Output: ${{ steps.bicep_resource_group.outputs.whatif_result }}"
+          echo "RG Output: ${{ steps.bicep_resource_group.outputs }}"
+          printf "${{ join( steps.bicep_resource_group.outputs.*, '\n' ) }}"
 
       - name: Create Temp Resource Group
         shell: bash
