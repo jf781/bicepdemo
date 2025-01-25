@@ -43,7 +43,7 @@ jobs:
         run: |
           $params = ((az bicep build-params --file paramFiles/resourceGroups.bicepparam --stdout | ConvertFrom-Json).parametersJson | ConvertFrom-Json)
           echo $params
-          $location $params.rg.value.location
+          $location = $params.rg.value.location
           $rgName = $params.rg.value.name
           echo $location
           echo $rgName
