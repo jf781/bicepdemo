@@ -44,6 +44,8 @@ jobs:
           $params = ((az bicep build-params --file paramFiles/resourceGroups.bicepparam --stdout | ConvertFrom-Json).parametersJson | ConvertFrom-Json)
           $location = $params.parameters.rg.value.location
           $rgName = $params.parameters.rg.value.name
+          echo "location is $location"
+          echo "rgName is $rgName"
           echo "location=$location" >> $GITHUB_OUTPUT
           echo "resource_group_name=$rgName" >> $GITHUB_OUTPUT
 
