@@ -10,7 +10,7 @@ param logAnalyticWorkspace = {
 
 param keyVaultAdminGroupId = '15030c68-3278-4d9c-885c-1ceabd690d70'
 
-param webAppName = 'jfBicepDemoWebApp'
+param webAppName = 'jfBicepDemoWebApp123'
 
 param appConfigPublicNetworkAccess = 'Enabled'
 
