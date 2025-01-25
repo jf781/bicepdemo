@@ -43,7 +43,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          deployment-scope: 'resourcegroup'
+          deployment-scope: 'resourceGroup'
           deployment-resource-group: 'demoRg'
           deployment-region: ${{ vars.AZURE_REGION }}
           deployment-template: 'resources/resources.bicep'
