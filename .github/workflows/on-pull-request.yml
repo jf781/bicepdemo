@@ -36,7 +36,7 @@ jobs:
           echo "location=$location" >> $env:GITHUB_OUTPUT
           echo "resource_group_name=$resource_group_name" >> $env:GITHUB_OUTPUT
       
-      - name: Bicep WhatIf - Resource Group
+      - name: Bicep Validate - Resource Group
         id: bicep_validate_resource_group
         uses: jf781/GHActions/bicep-deployment@main
         with:
@@ -91,7 +91,7 @@ jobs:
       - name: Testing
         shell: bash
         run: |
-          echo "RG Output: ${{ steps.bicep_what_if_resource_group.outputs }}"
+          echo "RG Output: ${{ steps.bicep_what_if_resource_group.outputs.result }}"
 
       - name: Create Temp Resource Group
         shell: bash
@@ -107,7 +107,7 @@ jobs:
             echo "Temporarily creating resource group ${{ steps.parse_parameters.outputs.resource_group_name }}"
           fi
 
-      - name: Bicep WhatIf - Resources
+      - name: Bicep Validate - Resources
         uses: jf781/GHActions/bicep-deployment@main
         id: bicep_validate_resources
         with:
