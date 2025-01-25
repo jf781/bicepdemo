@@ -59,7 +59,6 @@ jobs:
           scope: subscription
           location: ${{ steps.parse_parameters.outputs.location }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          # resource-group-name: ${{ inputs.deployment-resource-group }}
           template-file: 'resourceGropus/resourceGroups.bicep'
           parameters-file: 'paramFiles/resourceGroups.bicepparam'
 
@@ -67,7 +66,8 @@ jobs:
         shell: bash
         run: |
           echo "RG Output: ${{ steps.bicep_resource_group.outputs }}"
-          printf "${{ join( steps.bicep_resource_group.outputs.*, '\n' ) }}"
+          printf "${{ join(steps.bicep_resource_group.outputs.*, '\n') }}"
+          echo "${{ toJSON(steps.bicep_resource_group.outputs) }}"
 
       - name: Create Temp Resource Group
         shell: bash
