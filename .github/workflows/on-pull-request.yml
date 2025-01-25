@@ -42,6 +42,7 @@ jobs:
         id: parse_parameters
         run: |
           ls
+          cat paramFiles/resourceGroups.bicepparam
           $params = ((az bicep build-params --file paramFiles/resourceGroups.bicepparam --stdout | ConvertFrom-Json).parametersJson | ConvertFrom-Json)
           echo $params
           $location = $params.rg.value.location
