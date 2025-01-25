@@ -60,7 +60,7 @@ jobs:
           deployment-region: ${{ steps.parse_parameters.outputs.location }}
           deployment-template: 'resourceGropus/resourceGroups.bicep'
           deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
-          deployment-operation: 'whatif'
+          deployment-operation: 'whatIf'
 
       # - name: Bicep Validate - Resource Group
       #   id: bicep_validate_resource_group
@@ -165,7 +165,7 @@ jobs:
         shell: bash
         run: |
           echo "Resources Output: ${{ steps.bicep_what_if_resources.outputs }}"
-          
+
       - name: Remove Temp Resource Group
         if: always()
         shell: bash
