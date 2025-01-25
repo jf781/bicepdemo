@@ -53,7 +53,7 @@ jobs:
         shell: bash
         id: create_temp_rg
         run: |
-          if [[ az group group exists --name ${{ steps.parse_parameters.outputs.resource_group_name }} ]]; then
+          if az group exists --name ${{ steps.parse_parameters.outputs.resource_group_name }}; then
             echo "Resource group ${{ steps.parse_parameters.outputs.resource_group_name }} already exists"
             echo "resource_group_exists=true" >> $GITHUB_OUTPUT
           else
@@ -80,7 +80,7 @@ jobs:
         shell: bash
         id: remove_temp_rg
         run: |
-          if [[ ${{ steps.create_temp_rg.outputs.resource_group_exists}} }} ]]; then
+          if [[ ${{ steps.create_temp_rg.outputs.resource_group_exists}} ]]; then
             echo "No changes, pre-defined resource group. Skipping deletion"
           else
             az group delete --name ${{ steps.parse_parameters.outputs.resource_group_name }} --location ${{ steps.parse_parameters.outputs.location }}
