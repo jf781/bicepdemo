@@ -62,37 +62,6 @@ jobs:
           deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
           deployment-operation: 'whatIf'
 
-      # - name: Bicep Validate - Resource Group
-      #   id: bicep_validate_resource_group
-      #   uses: azure/bicep-deploy@v2
-      #   with:
-      #     type: deployment
-      #     operation: 'validate'
-      #     name: " ${{ steps.parse_parameters.outputs.location }}-${{ steps.parse_parameters.outputs.resource_group_name }}"
-      #     scope: subscription
-      #     location: ${{ steps.parse_parameters.outputs.location }}
-      #     subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      #     template-file: 'resourceGropus/resourceGroups.bicep'
-      #     parameters-file: 'paramFiles/resourceGroups.bicepparam'
-
-      # - name: Bicep WhatIf - Resource Group
-      #   id: bicep_what_if_resource_group
-      #   uses: azure/bicep-deploy@v2
-      #   with:
-      #     type: deployment
-      #     operation: 'whatIf'
-      #     name: " ${{ steps.parse_parameters.outputs.location }}-${{ steps.parse_parameters.outputs.resource_group_name }}"
-      #     scope: subscription
-      #     location: ${{ steps.parse_parameters.outputs.location }}
-      #     subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      #     template-file: 'resourceGropus/resourceGroups.bicep'
-      #     parameters-file: 'paramFiles/resourceGroups.bicepparam'
-
-      - name: Testing
-        shell: bash
-        run: |
-          echo ${{ steps.bicep_what_if_resource_group.outputs.outputs }} | jq 
-
       - name: Create Temp Resource Group
         shell: bash
         id: create_temp_rg
@@ -133,38 +102,6 @@ jobs:
           deployment-template: 'resources/resources.bicep'
           deployment-parameters: 'paramFiles/resources.bicepparam'
           deployment-operation: 'whatIf'
-
-      # - name: Bicep Validate - Resources
-      #   id: bicep_validate_resources
-      #   uses: azure/bicep-deploy@v2
-      #   with:
-      #     type: deployment
-      #     operation: 'validate'
-      #     name: " ${{ steps.parse_parameters.outputs.location }}-${{ steps.parse_parameters.outputs.resource_group_name }}-resources"
-      #     scope: resourceGroup
-      #     subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      #     resource-group-name: ${{ steps.parse_parameters.outputs.resource_group_name }}
-      #     template-file: 'resources/resources.bicep'
-      #     parameters-file: 'paramFiles/resources.bicepparam'
-
-      # - name: Bicep WhatIf - Resources
-      #   id: bicep_what_if_resources
-      #   uses: azure/bicep-deploy@v2
-      #   with:
-      #     type: deployment
-      #     operation: 'whatIf'
-      #     name: " ${{ steps.parse_parameters.outputs.location }}-${{ steps.parse_parameters.outputs.resource_group_name }}-resources"
-      #     scope: resourceGroup
-      #     subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      #     resource-group-name: ${{ steps.parse_parameters.outputs.resource_group_name }}
-      #     template-file: 'resources/resources.bicep'
-      #     parameters-file: 'paramFiles/resources.bicepparam'
-
-
-      - name: Testing
-        shell: bash
-        run: |
-          echo "Resources Output: ${{ steps.bicep_what_if_resources.outputs }}"
 
       - name: Remove Temp Resource Group
         if: always()
