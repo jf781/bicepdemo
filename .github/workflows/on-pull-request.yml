@@ -24,26 +24,24 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
         
-      - name: Bicep WhatIf - Resource Group
-        id: bicep_rg
-        uses: jf781/GHActions/bicep-deployment@main
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          deployment-scope: 'subscription'
-          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          deployment-region: ${{ vars.AZURE_REGION }}
-          deployment-template: 'resourceGropus/resourceGroups.bicep'
-          deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
-          deployment-operation: 'whatIf'
+      # - name: Bicep WhatIf - Resource Group
+      #   id: bicep_rg
+      #   uses: jf781/GHActions/bicep-deployment@main
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      #     deployment-scope: 'subscription'
+      #     deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      #     deployment-region: ${{ vars.AZURE_REGION }}
+      #     deployment-template: 'resourceGropus/resourceGroups.bicep'
+      #     deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
+      #     deployment-operation: 'whatIf'
 
       - name: Parse Parameters File
         shell: pwsh
         id: parse_parameters
         run: |
-          cat $GITHUB_WORKSPACE/paramFiles/resourceGroups.bicepparam
-          ls $GITHUB_WORKSPACE/paramFiles
-          echo $GITHUB_WORKSPACE
+          ls
           $params = ((az bicep build-params --file paramFiles/resourceGroups.bicepparam --stdout | ConvertFrom-Json).parametersJson | ConvertFrom-Json)
           echo $params
           $location = $params.rg.value.location
