@@ -44,15 +44,15 @@ jobs:
           $params = ((az bicep build-params --file paramFiles/resourceGroups.bicepparam --stdout | ConvertFrom-Json).parametersJson | ConvertFrom-Json)
           $location = $params.parameters.rg.value.location
           $rgName = $params.parameters.rg.value.name
-          echo $location >> $GITHUB_OUTPUT
-          echo $rgName >> $GITHUB_OUTPUT
+          echo "location=$location" >> $GITHUB_OUTPUT
+          echo "resource_group_name=$rgName" >> $GITHUB_OUTPUT
 
       - name: test
         shell: pwsh
         id: test
         run: |
           echo ${{ steps.parse_parameters.outputs.location }}
-          echo ${{ steps.parse_parameters.outputs.rgName }}        
+          echo ${{ steps.parse_parameters.outputs.resource_group_name }}
 
       - name: Bicep WhatIf - Resources
         uses: jf781/GHActions/bicep-deployment@main
@@ -63,7 +63,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
           deployment-scope: 'resourceGroup'
-          deployment-resource-group: ${{ steps.parse_parameters.outputs.rgName }}
+          deployment-resource-group: ${{ steps.parse_parameters.outputs.resource_group_name }}
           deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           deployment-region: ${{ steps.parse_parameters.outputs.location }}
           deployment-template: 'resources/resources.bicep'
