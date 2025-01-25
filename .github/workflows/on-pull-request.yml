@@ -104,7 +104,6 @@ jobs:
           operation: 'whatIf'
           name: " ${{ steps.parse_parameters.outputs.location }}-${{ steps.parse_parameters.outputs.resource_group_name }}-resources"
           scope: resourceGroup
-          location: ${{ steps.parse_parameters.outputs.location }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           resource-group-name: ${{ steps.parse_parameters.outputs.resource_group_name }}
           template-file: 'resources/resources.bicep'
