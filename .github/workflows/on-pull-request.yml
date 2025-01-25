@@ -49,6 +49,11 @@ jobs:
           deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
           deployment-operation: 'whatIf'
 
+      - name: Testing
+        shell: bash
+        run: |
+          echo "RG Output: ${{ steps.bicep_rg.outputs }}"
+
       - name: Create Temp Resource Group
         shell: bash
         id: create_temp_rg
