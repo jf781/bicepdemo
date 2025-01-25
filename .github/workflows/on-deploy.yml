@@ -1,0 +1,63 @@
+name: "On deploy"
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bicep-deploy:
+    runs-on: ubuntu-latest
+    name: run bicep plan
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Parse Parameters File
+        shell: pwsh
+        id: parse_parameters
+        run: |
+          $params = ((az bicep build-params --file paramFiles/resourceGroups.bicepparam --stdout | ConvertFrom-Json).parametersJson | ConvertFrom-Json)
+          $location = $params.parameters.rg.value.location
+          $resource_group_name = $params.parameters.rg.value.name
+          echo "location is $location"
+          echo "resource_group_name is $resource_group_name"
+          echo "location=$location" >> $env:GITHUB_OUTPUT
+          echo "resource_group_name=$resource_group_name" >> $env:GITHUB_OUTPUT
+      
+      - name: Bicep - Resource Group
+        id: bicep_resource_group
+        uses: jf781/GHActions/bicep-deployment@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          deployment-scope: 'subscription'
+          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          deployment-region: ${{ steps.parse_parameters.outputs.location }}
+          deployment-template: 'resourceGropus/resourceGroups.bicep'
+          deployment-parameters: 'paramFiles/resourceGroups.bicepparam'
+          deployment-operation: 'create'
+
+      - name: Bicep - Resources
+        uses: jf781/GHActions/bicep-deployment@main
+        id: bicep_resources
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          deployment-scope: 'resourceGroup'
+          deployment-resource-group: ${{ steps.parse_parameters.outputs.resource_group_name }}
+          deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          deployment-template: 'resources/resources.bicep'
+          deployment-parameters: 'paramFiles/resources.bicepparam'
+          deployment-operation: 'create'
