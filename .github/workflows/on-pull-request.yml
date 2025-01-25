@@ -53,12 +53,14 @@ jobs:
         shell: bash
         id: create_temp_rg
         run: |
-          if az group exists --name ${{ steps.parse_parameters.outputs.resource_group_name }}; then
-            az group create --name ${{ steps.parse_parameters.outputs.resource_group_name }} --location ${{ steps.parse_parameters.outputs.location }}
-            echo "resource_group_exists=false" >> $GITHUB_OUTPUT
-          else
+          resource_group_exists=$(az group exists --name ${{ steps.parse_parameters.outputs.resource_group_name }})
+          echo "resource_group_exists=false" >> $GITHUB_OUTPUT
+          if [[ $resource_group_exists == "true" ]]; then
             echo "Resource group ${{ steps.parse_parameters.outputs.resource_group_name }} already exists"
-            echo "resource_group_exists=true" >> $GITHUB_OUTPUT
+            echo "Resource group already exists"
+          else
+            az group create --name ${{ steps.parse_parameters.outputs.resource_group_name }} --location ${{ steps.parse_parameters.outputs.location }}
+            echo "Temporarily creating resource group ${{ steps.parse_parameters.outputs.resource_group_name }}"
           fi
 
 
@@ -71,7 +73,6 @@ jobs:
           deployment-scope: 'resourceGroup'
           deployment-resource-group: ${{ steps.parse_parameters.outputs.resource_group_name }}
           deployment-subscription: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          deployment-region: ${{ steps.parse_parameters.outputs.location }}
           deployment-template: 'resources/resources.bicep'
           deployment-parameters: 'paramFiles/resources.bicepparam'
           deployment-operation: 'whatIf'
@@ -81,7 +82,7 @@ jobs:
         shell: bash
         id: remove_temp_rg
         run: |
-          if [[ ${{ steps.create_temp_rg.outputs.resource_group_exists}} ]]; then
+          if [[ ${{ steps.create_temp_rg.outputs.resource_group_exists}} == "true" ]]; then
             echo "No changes, pre-defined resource group. Skipping deletion"
           else
             az group delete --name ${{ steps.parse_parameters.outputs.resource_group_name }} --location ${{ steps.parse_parameters.outputs.location }}
